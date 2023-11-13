@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Polyverse Sara</title>
+    <script src="script.js"></script>
+</head>
+<body>
+    <h1>My Lambda Service</h1>
+    <form id="lambdaForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+        
+        <label for="sourceCode">Source Code:</label>
+        <textarea id="sourceCode" name="sourceCode"></textarea><br><br>
+
+        <label for="question">Question:</label>
+        <textarea id="question" name="question"></textarea><br><br>
+
+        <label for="options">Select Service:</label>
+        <select id="options" name="options">
+            <option value="user_organizations">User Organizations</option>
+            <option value="customer_portal">Customer Portal</option>
+            <option value="customprocess">Custom Process</option>
+            <option value="analyze_function">Analyze Function</option>
+            <option value="explain">Explain</option>
+        </select>
+        
+        <button type="button" onclick="submitData()">Ask Sara</button>
+    </form>
+
+    <h2>Response:</h2>
+    <textarea id="response" readonly></textarea>
+</body>
+</html>
