@@ -1,19 +1,12 @@
+import * as endpoints from './constants.js';
+
 async function submitData() {
     const email = document.getElementById('email').value;
     const code = document.getElementById('sourceCode').value;
     const question = document.getElementById('question').value;
     const option = document.getElementById('options').value;
     const submitChat = document.getElementById('submitChat');
-
-    const awsServer = ".lambda-url.us-west-2.on.aws/";
-    const endpoints = {
-        'user_organizations': "https://cro3oyez4g56b33hvglfwytg3q0alxrz" + awsServer,
-        'customer_portal': "https://hry4lqp3ktulatehaowyzhkbja0mkjob" + awsServer,
-        'customprocess': "https://fudpixnolc7qohinghnum2nlm40wmozy" + awsServer,
-        'analyze_function': "https://fubldwjkv4nau5qcnbrqilv6ba0dmkcc" + awsServer,
-        'explain': "https://jorsb57zbzwcxcjzl2xwvah45i0mjuxs" + awsServer,
-        'chat': "https://o6pn7utohv362ubwb6h4ie3jgm0zleqb" + awsServer,
-    };
+    const account = document.getElementById('account');
 
     const data = {
         'code': code,
@@ -32,7 +25,6 @@ async function submitData() {
             },
             body: JSON.stringify(data)
         });
-
         if (!response.ok) {
             if (response.status === 401) {
                 throw new Error(`Boost Cloud Service Permission issue.: ${response.status}`);
@@ -41,7 +33,10 @@ async function submitData() {
         }
 
         const responseData = await response.json();  // Parse JSON data from the response
-        document.getElementById('response').value = JSON.stringify(responseData, null, 2);
+
+        updateAccountStatus(responseData, account);
+        
+        document.getElementById('response').value = processResponse(option, responseData);
 
     } catch (error) {
 
@@ -52,5 +47,37 @@ async function submitData() {
         // Re-enable the submit button regardless of outcome
         submitChat.disabled = false;
 
+    }
+}
+
+function processResponse(option, responseData) {
+    switch (option) {
+        case 'chat':
+            return responseData.analysis;
+        case 'explain':
+            return responseData.explanation;
+        case 'analyze':
+            return responseData.analysis;
+        case 'customer_portal':
+            return "";
+        default:
+            return `Sara does not support your request.`;
+    }
+}
+
+function updateAccountStatus(responseData, account) {
+    const account = document.getElementById('account');
+    if (!responseData.account) {
+        return;
+    }
+
+    if (responseData.account.enabled) {
+        // change the style of the account element to 'assistant' style
+        account.classList.add('assistant');
+        account.classList.remove('error');
+    } else {
+        // change the style of the account element to 'error' style
+        account.classList.add('error');
+        account.classList.remove('assistant');
     }
 }
