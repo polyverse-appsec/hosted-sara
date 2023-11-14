@@ -17,7 +17,7 @@ async function submitData() {
 
     const data = {
         'code': code,
-        'question': question,
+        'query': question,
         'session': `testemail: ${email}`,
         'organization': 'polytest.ai',
     };
@@ -29,7 +29,6 @@ async function submitData() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'User-Agent': 'Mozilla/5.0'
             },
             body: JSON.stringify(data)
         });
@@ -46,7 +45,7 @@ async function submitData() {
 
     } catch (error) {
 
-        document.getElementById('response').value = `Sara was unable to answer your request due to ${error.message}\n${error.stack}`;
+        document.getElementById('response').value = `Sara was unable to answer your request due to ${error.message}${error.stack?'\n'+error.stack:''}`;
 
     } finally {
 
