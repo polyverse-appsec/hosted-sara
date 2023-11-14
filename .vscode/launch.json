@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Debugger",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://hosted-sara.s3-website-us-west-2.amazonaws.com/",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}

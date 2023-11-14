@@ -2,12 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Polyverse Sara</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polyverse Boost AI Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
     <script src="script.js"></script>
+    <script type="module">
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"; +
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <style>
+        .user {
+            padding: 5px;
+            border-radius: 5px;
+            border-left: 10px solid #0078D4;  /* Static Visual Studio Code Blue */
+        }
+
+        .error {
+            padding: 5px;
+            border-radius: 5px;
+            border-left: 10px solid var(--vscode-statusBarItem-errorBackground);  /* Error Red from VSCode theme */
+        }
+
+        .ignore {
+            padding: 5px;
+            border-radius: 5px;
+            border-left: 10px solid var(--vscode-activityBar-inactiveForeground);  /* Any color from VSCode theme */
+        }
+
+        .incomplete {
+            padding: 5px;
+            border-radius: 5px;
+            border-left: 10px solid var(--vscode-statusBarItem-warningForeground);  /* Warning Yellow from VSCode theme */
+        }
+
+        .assistant {
+            padding: 5px;
+            border-radius: 5px;
+            border-left: 10px solid var(--vscode-statusBarItem-remoteBackground);  /* Any color from VSCode theme */
+        }
+
+        .system {
+            border-color: aqua; /* Consider using a VSCode variable for this too */
+        }
+
+        .resize-image {
+            width: 20%;
+            height: auto;
+        }
+
+        textarea {
+            width: 100%;
+            box-sizing: border-box; /* Ensures padding doesn't add to the width */
+        }
+
+        textarea {
+            height: 150px; /* Adjust height as needed */
+        }
+
+    </style>
 </head>
 <body>
-    <h1>My Lambda Service</h1>
-    <form id="lambdaForm">
+    <img src="https://polyverse.com/cdn/shop/files/polyverse_blue_copy.png" alt="Polyverse Logo">
+    <img src="https://polyverse.com/cdn/shop/files/Screenshot_2023-07-27_at_5.13.05_PM.jpg" class="resize-image" alt="Boost">
+    <h1>Ask Sara about your Project</h1>
         <label for="email">Email:</label>
         <input type="email" id="email" name="email"><br><br>
         
@@ -19,17 +76,15 @@
 
         <label for="options">Select Service:</label>
         <select id="options" name="options">
-            <option value="user_organizations">User Organizations</option>
+            <option value="chat">Chat</option>
             <option value="customer_portal">Customer Portal</option>
-            <option value="customprocess">Custom Process</option>
-            <option value="analyze_function">Analyze Function</option>
             <option value="explain">Explain</option>
         </select>
         
-        <button type="button" onclick="submitData()">Ask Sara</button>
+        <button type="button" id="submitChat" onclick="submitData()">Ask Sara</button>
     </form>
 
-    <h2>Response:</h2>
+    <h2>Sara's Analysis</h2>
     <textarea id="response" readonly></textarea>
 </body>
 </html>
