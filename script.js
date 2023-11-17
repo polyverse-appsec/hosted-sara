@@ -1,4 +1,4 @@
-import * as endpoints from './constants.js';
+import { endpoints } from './constants.js';
 
 async function submitData() {
     const email = document.getElementById('email').value;
@@ -6,7 +6,7 @@ async function submitData() {
     const question = document.getElementById('question').value;
     const option = document.getElementById('options').value;
     const submitChat = document.getElementById('submitChat');
-    const account = document.getElementById('account');
+    const accountStatus = document.getElementById('account');
 
     const data = {
         'code': code,
@@ -18,23 +18,25 @@ async function submitData() {
     submitChat.disabled = true;
 
     try {
-        const response = await fetch(endpoints[option], {
+        const boostResponse = await fetch(endpoints[option], {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)
         });
-        if (!response.ok) {
-            if (response.status === 401) {
-                throw new Error(`Boost Cloud Service Permission issue.: ${response.status}`);
+        if (!boostResponse.ok) {
+            if (boostResponse.status === 401) {
+                throw new Error(`Boost Cloud Service Permission issue.: ${boostResponse.status}`);
             }
-            throw new Error(`Boost Cloud Service Error: ${response.status}`);
+            throw new Error(`Boost Cloud Service Error: ${boostResponse.status}`);
         }
 
-        const responseData = await response.json();  // Parse JSON data from the response
+        const responseData = await boostResponse.json();  // Parse JSON data from the response
 
-        updateAccountStatus(responseData, account);
+        updateAccountStatus(
+            option == "customer_portal"?{account:responseData}:responseData,
+            accountStatus);
         
         document.getElementById('response').value = processResponse(option, responseData);
 
@@ -50,6 +52,10 @@ async function submitData() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('submitChat').addEventListener('click', submitData);
+});
+
 function processResponse(option, responseData) {
     switch (option) {
         case 'chat':
@@ -59,25 +65,27 @@ function processResponse(option, responseData) {
         case 'analyze':
             return responseData.analysis;
         case 'customer_portal':
-            return "";
+            return `* Status: ${responseData.status}\n` +
+                   `* Trial Remaining: ${responseData.trial_remaining}\n` +
+                   `* Usage This Month: ${responseData.usage_this_month}\n` +
+                   `* Balance Due: ${responseData.balance_due}`;
         default:
             return `Sara does not support your request.`;
     }
 }
 
-function updateAccountStatus(responseData, account) {
-    const account = document.getElementById('account');
+function updateAccountStatus(responseData, accountStatus) {
     if (!responseData.account) {
         return;
     }
 
     if (responseData.account.enabled) {
         // change the style of the account element to 'assistant' style
-        account.classList.add('assistant');
-        account.classList.remove('error');
+        accountStatus.classList.add('assistant');
+        accountStatus.classList.remove('error');
     } else {
         // change the style of the account element to 'error' style
-        account.classList.add('error');
-        account.classList.remove('assistant');
+        accountStatus.classList.add('error');
+        accountStatus.classList.remove('assistant');
     }
 }

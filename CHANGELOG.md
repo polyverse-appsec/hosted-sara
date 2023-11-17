@@ -1,7 +1,18 @@
-Polyverse Boost Automatic Application Modernization
+Polyverse Sara Web Agent for Boost
 ======================
 
 # Release Notes
+
+## Version 0.2.2: November 14th, 2023
+
+### New Features
+- N/A
+
+### Enhancements
+- Minor style improvements
+
+### Bug Fixes
+- N/A
 
 ## Version 0.2.0: November 13th, 2023
 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Polyverse Boost AI Chat</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
     <script type="module">
         import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"; +
         mermaid.initialize({ startOnLoad: true });
@@ -51,7 +51,7 @@
         }
 
         textarea {
-            width: 100%;
+            width: 80%;
             box-sizing: border-box; /* Ensures padding doesn't add to the width */
         }
 
@@ -62,29 +62,42 @@
     </style>
 </head>
 <body>
-    <img src="https://polyverse.com/cdn/shop/files/polyverse_blue_copy.png" alt="Polyverse Logo">
-    <img src="https://polyverse.com/cdn/shop/files/Screenshot_2023-07-27_at_5.13.05_PM.jpg" class="resize-image" alt="Boost">
-    <h1>Ask Sara about your Project</h1>
-        <label for="email" id="account">Email:</label>
-        <input type="email" id="email" name="email" autocomplete="on"><br><br>
-        
-        <label for="sourceCode">Source Code:</label>
-        <textarea id="sourceCode" name="sourceCode"></textarea><br><br>
+    <section id="header">
+        <img src="https://polyverse.com/cdn/shop/files/polyverse_blue_copy.png" alt="Polyverse Logo">
+        <img src="https://polyverse.com/cdn/shop/files/Screenshot_2023-07-27_at_5.13.05_PM.jpg" class="resize-image" alt="Boost">
+    </section>
 
-        <label for="options">Select Service:</label>
-        <select id="options" name="options">
-            <option value="chat">Chat</option>
-            <option value="customer_portal">Customer Portal</option>
-            <option value="explain">Explain</option>
-        </select>
+    <section id="web-sara">
+        <h1>Ask Sara about your Project</h1>
+            <label for="email" id="account">Email:</label>
+            <input type="email" id="email" name="email" autocomplete="on"><br><br>
 
-        <label for="question">Question:</label>
-        <textarea id="question" name="question"></textarea><br><br>
-        
-        <button type="button" id="submitChat" onclick="submitData()">Ask Sara</button>
-    </form>
+            <label for="sourceCode">Source Code:</label><br>
+            <textarea id="sourceCode" name="sourceCode"></textarea><br><br>
 
-    <h2>Sara's Analysis</h2>
-    <textarea id="response" readonly></textarea>
+            <label for="options">Ask Sara</label>
+            <select id="options" name="options">
+                <option value="chat">a question about your code</option>
+                <option value="customer_portal">to check your account status</option>
+                <option value="explain">to explain your code</option>
+            </select>
+            <button type="button" id="submitChat">Go</button><br><br>
+
+            <label for="question">Question:</label><br>
+            <textarea id="question" name="question"></textarea><br><br>
+        </form>
+
+        <h2>Sara's Analysis</h2>
+        <textarea id="response" readonly></textarea>
+    </section>
+
+    <section>
+        <h1>3rd Party Integrations</h1>
+
+        <!-- GitHub Authentication Button -->
+        <button id="githubAuth" onclick="location.href='https://github.com/apps/polyverse-boost'">
+            Connect to GitHub
+        </button><br><br>
+    </section>
 </body>
 </html>
