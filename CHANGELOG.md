@@ -3,6 +3,17 @@ Polyverse Sara Web Agent for Boost
 
 # Release Notes
 
+## Version 0.3.1: November 20th, 2023
+
+### New Features
+- N/A
+
+### Enhancements
+- N/A
+
+### Bug Fixes
+- Fixed URI issue preventing GitHub.com file retrieval
+
 ## Version 0.3.0: November 16th, 2023
 
 ### New Features
@@ -13,6 +24,7 @@ Polyverse Sara Web Agent for Boost
 
 ### Bug Fixes
 - N/A
+
 ## Version 0.2.2: November 14th, 2023
 
 ### New Features
