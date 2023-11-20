@@ -64,7 +64,7 @@ async function loadFromGitHub() {
     try {
         const escapedUri = encodeURIComponent(githubresource);
 
-        const get_file_from_uri = `${endpoints["get_file_from_uri"]}/api/get_file_from_uri?uri=${escapedUri}&email=${email}`;
+        const get_file_from_uri = `${endpoints["get_file_from_uri"]}api/get_file_from_uri?uri=${escapedUri}&email=${email}`;
         const boostResponse = await fetch(get_file_from_uri, {
             method: 'GET',
         });
