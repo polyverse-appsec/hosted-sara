@@ -52,8 +52,53 @@ async function submitData() {
     }
 }
 
+async function loadFromGitHub() {
+    const email = document.getElementById('email').value;
+    const githubresource = document.getElementById('github-uri').value;
+    const codeBox = document.getElementById('sourceCode');
+    const loadFromGitHub = document.getElementById('loadFromGitHub');
+    const githubresourceBox = document.getElementById('github-uri');
+
+    loadFromGitHub.disabled = true;
+
+    try {
+        const escapedUri = encodeURIComponent(githubresource);
+
+        const get_file_from_uri = `${endpoints["get_file_from_uri"]}/api/get_file_from_uri?uri=${escapedUri}&email=${email}`;
+        const boostResponse = await fetch(get_file_from_uri, {
+            method: 'GET',
+        });
+        if (!boostResponse.ok) {
+            if (boostResponse.status === 401) {
+                throw new Error(`Boost Cloud Service Permission issue: ${boostResponse.status}`);
+            }
+            throw new Error(`Boost Cloud Service Error: ${boostResponse.status}`);
+        }
+
+        // change the style of the github to 'assistant' style
+        githubresourceBox.classList.add('assistant');
+        githubresourceBox.classList.remove('error');
+
+        codeBox.value = await boostResponse.text();
+
+    } catch (error) {
+        // change the style of the github to 'error' style
+        githubresourceBox.classList.add('error');
+        githubresourceBox.classList.remove('assistant');
+    
+        document.getElementById('response').value = `Sara was unable to load source from ${githubresource}\n${error.stack}`;
+
+    } finally {
+
+        // Re-enable the submit button regardless of outcome
+        loadFromGitHub.disabled = false;
+
+    }
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('submitChat').addEventListener('click', submitData);
+    document.getElementById('loadFromGitHub').addEventListener('click', loadFromGitHub);
 });
 
 function processResponse(option, responseData) {
