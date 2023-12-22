@@ -7,6 +7,8 @@ async function submitData() {
     const option = document.getElementById('options').value;
     const submitChat = document.getElementById('submitChat');
     const accountStatus = document.getElementById('account');
+        
+    const response = document.getElementById('response');
 
     const data = {
         'code': code,
@@ -18,6 +20,23 @@ async function submitData() {
     submitChat.disabled = true;
 
     try {
+        response.value = "";
+
+        // grab cached answer if available
+        if (option === 'explain' || option === 'customprocess' || option === 'analyze_function') {
+            const cachedDataFetchUri = generateRequestUri(document.getElementById('github-uri').value, option);        
+
+            const boostResponse = await fetch(cachedDataFetchUri, {
+                method: 'GET',
+            });
+            if (boostResponse.ok) {
+                const responseData = await boostResponse.json();
+
+                response.value = responseData.body;
+                return;
+            }        
+        }
+
         const boostResponse = await fetch(endpoints[option], {
             method: 'POST',
             headers: {
@@ -38,11 +57,26 @@ async function submitData() {
             option == "customer_portal"?{account:responseData}:responseData,
             accountStatus);
         
-        document.getElementById('response').value = processResponse(option, responseData);
+        response.value = processResponse(option, responseData);
 
+        // cache the answer if available
+        if (option === 'explain' || option === 'customprocess' || option === 'analyze_function') {
+            const cachedDataFetchUri = generateRequestUri(document.getElementById('github-uri').value, option);        
+
+            const boostResponse = await fetch(cachedDataFetchUri, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
+                body: response.value
+            });
+            if (!boostResponse.ok) {
+                console.log(`Unable to cache result in Boost Cloud Store: ${boostResponse.status}`);
+            }
+        }
     } catch (error) {
 
-        document.getElementById('response').value = `Sara was unable to answer your request due to ${error.message}${error.stack?'\n'+error.stack:''}`;
+        response.value = `Sara was unable to answer your request due to ${error.message}${error.stack?'\n'+error.stack:''}`;
 
     } finally {
 
@@ -136,4 +170,25 @@ function updateAccountStatus(responseData, accountStatus) {
         accountStatus.classList.add('error');
         accountStatus.classList.remove('assistant');
     }
+}
+
+function generateRequestUri(githubUrl, analysisType) {
+    // Regular expression to extract owner, project, and path from the GitHub URL
+    const regex = /github\.com\/([^\/]+)\/([^\/]+)\/blob\/(.+)/;
+    const match = githubUrl.match(regex);
+
+    if (!match) {
+        throw new Error("Invalid GitHub URL");
+    }
+
+    const owner = match[1];
+    const project = match[2];
+    const path = match[3];
+
+    // Encode the path in Base64
+    const pathBase64 = btoa(path);
+
+    // Construct the request URI
+    const requestUri = `${endpoints["storage"]}api/files/github/${owner}/${project}/${pathBase64}/${analysisType}`;
+    return requestUri;
 }

@@ -7,5 +7,7 @@ export const endpoints = {
     'analyze_function': "https://fubldwjkv4nau5qcnbrqilv6ba0dmkcc" + awsServer,
     'explain': "https://jorsb57zbzwcxcjzl2xwvah45i0mjuxs" + awsServer,
     'chat': "https://o6pn7utohv362ubwb6h4ie3jgm0zleqb" + awsServer,
+    
     'get_file_from_uri': "https://pt5sl5vwfjn6lsr2k6szuvfhnq0vaxhl" + awsServer,
+    'storage': "https://pt5sl5vwfjn6lsr2k6szuvfhnq0vaxhl" + awsServer,
 };
