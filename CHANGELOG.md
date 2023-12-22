@@ -1,7 +1,19 @@
-Polyverse Sara Web Agent for Boost
+Polyverse Sara Static Web UI for Boost
 ======================
 
 # Release Notes
+
+## Version 0.4.0: November 30th, 2023
+
+### New Features
+- Results are loaded and stored via `GET /api/files/{source}/{owner}/{project}/{path-base64}/{analysis_type}` and `POST /api/files/{owner}/{project}}/{path-base64}/{analysis_type}`
+
+### Enhancements
+- N/A
+
+### Bug Fixes
+- Fix endpoint address for get_file_from_uri
+- Fix rendering of raw code retrieved from get_file_from_uri
 
 ## Version 0.3.1: November 20th, 2023
 

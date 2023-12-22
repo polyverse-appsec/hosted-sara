@@ -79,7 +79,10 @@ async function loadFromGitHub() {
         githubresourceBox.classList.add('assistant');
         githubresourceBox.classList.remove('error');
 
-        codeBox.value = await boostResponse.text();
+        // Assuming the response text is JSON, parse it
+        const responseData = JSON.parse(await boostResponse.text());
+
+        codeBox.value = responseData.body;
 
     } catch (error) {
         // change the style of the github to 'error' style
